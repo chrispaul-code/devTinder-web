@@ -9,6 +9,7 @@ const Login = () => {
 
    const [emailId , setEmailId]=useState("Messi@bharsa.com");
    const [password, setPassword]=useState("Messi@123")
+   const [error,setError]=useState("")
 
    const dispatch=useDispatch();
    const navigate=useNavigate();
@@ -25,6 +26,7 @@ const Login = () => {
         return navigate("/")
 
       } catch (error) {
+        setError(error?.response?.data || "Someting went wrong")
         console.error(error)
       }
 
@@ -65,7 +67,7 @@ const Login = () => {
   <input type="text" className="grow" value={password} placeholder='Password' onChange={(e)=>(setPassword(e.target.value))}/>
 </label>
 
-
+   <p className='pt-2  text-red-600'>{error} </p>
     <div className="card-actions mt-3  flex justify-center">
       <button className="btn btn-primary px-8" onClick={handleLogin} >Login</button>
     </div>
