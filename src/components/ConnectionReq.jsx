@@ -14,7 +14,7 @@ const ConnectionReq = () => {
 
     useEffect(()=>{
        fetchConnections();
-    },[])
+    },[]) 
 
     if(!connections) return;
 
