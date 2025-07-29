@@ -7,8 +7,11 @@ import { BASE_URL } from '../utils/constants';
 
 const Login = () => {
 
-   const [emailId , setEmailId]=useState("Messi@bharsa.com");
-   const [password, setPassword]=useState("Messi@123")
+   const [emailId , setEmailId]=useState("");
+   const [password, setPassword]=useState("")
+   const [firstName,setFirstName]=useState("");
+   const [lastName ,setLastName]=useState("")
+   const [isLoginForm,setIsLoginForm]=useState(true)
    const [error,setError]=useState("")
 
    const dispatch=useDispatch();
@@ -27,17 +30,58 @@ const Login = () => {
 
       } catch (error) {
         setError(error?.response?.data || "Someting went wrong")
-        console.error(error)
+      
       }
 
 
+   }
+
+   const handleSignup=async()=>{
+    try {
+      const res=await axios.post(BASE_URL+"/signup",{firstName,lastName,emailId,password},{withCredentials:true})
+
+      dispatch(addUser(res.data.data));
+      return navigate("/profile")
+    } catch (error) {
+       setError(error?.response?.data || "Someting went wrong")  
+    }
    }
 
   return (
     <div className='flex justify-center items-center my-10 '>
       <div className="card bg-base-300 w-96 shadow-xl">
   <div className="card-body">
-    <h2 className="card-title flex justify-center pb-5 ">Login </h2>
+    <h2 className="card-title flex justify-center pb-5 ">{isLoginForm ? "Login":"Sign Up"} </h2>
+{!isLoginForm && <>
+<label className="input input-bordered flex items-center gap-2 mb-2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 16 16"
+    fill="currentColor"
+    className="h-4 w-4 opacity-70">
+    <path
+      d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
+    <path
+      d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+  </svg>
+  <input type="text" className="grow" placeholder="FirstName" value={firstName} onChange={(e)=>(setFirstName(e.target.value))} />
+</label>
+
+<label className="input input-bordered flex items-center gap-2 mb-2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 16 16"
+    fill="currentColor"
+    className="h-4 w-4 opacity-70">
+    <path
+      d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
+    <path
+      d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+  </svg>
+  <input type="text" className="grow" placeholder="LastName" value={lastName} onChange={(e)=>(setLastName(e.target.value))} />
+</label>
+</>}
+
     
 <label className="input input-bordered flex items-center gap-2 mb-2">
   <svg
@@ -69,8 +113,9 @@ const Login = () => {
 
    <p className='pt-2  text-red-600'>{error} </p>
     <div className="card-actions mt-3  flex justify-center">
-      <button className="btn btn-primary px-8" onClick={handleLogin} >Login</button>
+      <button className="btn btn-primary px-8" onClick={isLoginForm? handleLogin : handleSignup} >{isLoginForm ? "Login":"Sign Up"} </button>
     </div>
+    <p className=' cursor-pointer  m-auto mt-3' onClick={()=>setIsLoginForm((value)=>!value)}>{isLoginForm? "New User? Sign Up":"Existing user? Login"}</p>
   </div>
 </div>
     </div>

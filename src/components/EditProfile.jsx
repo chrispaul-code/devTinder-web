@@ -14,7 +14,7 @@ const EditProfile = ({user}) => {
     const [photoUrl,setPhotoUrl]=useState(user.photoUrl)
     const [about,setAbout]=useState(user.about)
     const [gender,setGender]=useState(user.gender)
-    const [error,setError]=useState("")
+    const [error,setError]= useState("")
     const[showTost,setShowTost]=useState(false)
 
 
